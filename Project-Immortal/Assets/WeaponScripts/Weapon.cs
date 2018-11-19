@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour {
 
+    public Text ammo;
 
     public bool pickedUp;
 
@@ -14,7 +16,7 @@ public class Weapon : MonoBehaviour {
     public int bulletsRemaining;
     public bool isMelee;
     public Transform shootPoint;
-
+    public bool isActive;
     public float coolDown = 0.1f;
     public float reloadCD = 1.5f;
     float timer;
@@ -31,30 +33,36 @@ public class Weapon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!isMelee)
+        if (isActive)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (!isMelee)
             {
-                Reload();
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Reload();
+                }
+                if (timerReload < reloadCD)
+                {
+                    timerReload += Time.deltaTime;
+                }
+                ammo.text = bulletsRemaining + "/" + bulletsPer;
             }
-            if (timerReload < reloadCD)
+            else
             {
-                timerReload += Time.deltaTime;
+                ammo.text = "";
+            }
+            if (Input.GetButton("Fire1"))
+            {
+                Fire();
+                
+            }
+
+            if (timer < coolDown)
+            {
+                timer += Time.deltaTime;
             }
         }
-        if (Input.GetButton("Fire1"))
-        {
-            Fire();
-        }
-
-        
-
-        
-
-        if (timer < coolDown)
-        {
-            timer += Time.deltaTime;
-        }
+		
 
 	}
 
@@ -72,6 +80,7 @@ public class Weapon : MonoBehaviour {
                     
                 }
                 bulletsRemaining--;
+                
             }
         }
         else
@@ -85,6 +94,7 @@ public class Weapon : MonoBehaviour {
                     Debug.Log(hit.transform.name + " found!");
                 }
             }
+
         }
     }
 

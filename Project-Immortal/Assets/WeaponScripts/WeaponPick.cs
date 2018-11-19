@@ -38,9 +38,17 @@ public class WeaponPick : MonoBehaviour {
                     {
                         int i = weapon.GetComponent<Weapon>().weaponNum;
                         if (i == num && weapon.GetComponent<Weapon>().pickedUp)
+                        {
                             weapon.gameObject.SetActive(true);
+                            weapon.GetComponent<Weapon>().isActive = true;
+                        }
+                            
                         else
+                        {
                             weapon.gameObject.SetActive(false);
+                            weapon.GetComponent<Weapon>().isActive = false;
+                        }
+                            
 
                     }
                     num++;
